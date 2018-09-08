@@ -22,18 +22,22 @@ cats.push(harley, pogo, nibbles, spook, spike);
 console.log(cats);  // just double-checking that the cats were added properly
 
 //-------------- the page display ------------
-
 document.body.innerHTML = "";  // Clear the page
 
 // For each cat in the array, create the choices
 for(let cat of cats) {
-	// create the menu of names to select which cat to view
+	// assign a copy of the current cat name to a variable so it will persist
 	let catName = cat.name;
+
+	// create the menu option element
 	let selector = document.createElement('div');
-		selector.id = "subject";
-		selector.textContent = catName;
+		selector.id = "subject";  // add the id for reference and the css
+		selector.textContent = catName;  // add the name to the element
+
+		// add the created cat name element to the option choices
 		document.body.append(selector);
 		
+		// create the listener event for each option choice
     selector.addEventListener('click', (function(catName) {
         return function() {
         	let options = document.querySelectorAll('#profile');
@@ -51,20 +55,21 @@ for(let cat of cats) {
 
 
 
-	// add instructions
+	// add instructions & header bar
 	let header = document.createElement('header');
 	header.textContent = "Select a name above to view a cat or click the blue header to view all.  Then click the pics to vote for your favs!";
 	document.body.append(header);
 
+	// add event listener to header bar to display all cats if desired
 	header.addEventListener('click', (function() {
 		let allCats = document.querySelectorAll('#profile');
 		$(allCats).css({'display': "inline-block"});
 	}))
 
 
-// For each cat in the array, create the display
+// For each cat in the array, create profile to display
 for(let cat of cats) {
-	// assign copies of the cat variables
+	// assign copies of the cat object elements to variables so they will persist
 	let catName = cat.name;
 	let catCount = cat.count;
 	let catPic = cat.pic;
@@ -91,7 +96,7 @@ for(let cat of cats) {
 		profile.append(pic);
 		profile.append(counter);
 
-	// add the complete cat profile to the page
+	// add the completed cat profile to the page
 	document.body.append(profile);
 
 
@@ -104,8 +109,14 @@ for(let cat of cats) {
 			} else {
 				tally = catCount + " clicks";
 			}
+
+			// Update the display with the new click tally
 			counter.textContent = tally;
-			console.log(tally);
+			console.log(tally);  // double-check myself
+
+			// Update the actual cat object with the new count
+			cat.count = tally;
+	        console.log(cat); // double-check to verify object has been updated
         };
     })(cat.count));
 
